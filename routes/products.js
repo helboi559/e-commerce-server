@@ -70,7 +70,7 @@ router.get('/', async function(req, res, next) {
       .skip(skip)
       .limit(limit)
       .toArray();
-    console.log(newData)
+    // console.log(newData)
     res.json({message:newData,success:true})
   } catch (error) {
     res.json({message:String(error),success:false})

@@ -1,4 +1,5 @@
 var express = require('express');
+const { uuid } = require('uuidv4');
 var router = express.Router();
 
 var {blogsDB} = require('../mongo.js')
@@ -12,5 +13,27 @@ router.get('/', async function(req, res, next) {
     res.json({message:String(error)})
   }
 });
+
+// ADD{POST} Cart to List  
+router.post('/create-cart', async (req,res) => {
+  try {
+    const items = req.body.products
+    // console.log("items",items)
+    const today =new Date()
+    const collection = await blogsDB().collection("carts")
+    
+    const data = {
+      id:uuid(),
+      date:today.toISOString(),
+      products:items
+    }
+    // console.log('data',data)
+  const addProduct = await collection.insertOne(data)
+    res.json({message:"success"})
+    
+  } catch (error) {
+    res.json({message:String(error)})
+  }
+})
 
 module.exports = router;
