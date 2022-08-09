@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const { uuid } = require('uuidv4');
-var {blogsDB} = require('../mongo.js')
+var {EcommDB} = require('../mongo.js')
 
 //PRODUCT SAMPLE
 // {
@@ -19,7 +19,7 @@ var {blogsDB} = require('../mongo.js')
 // /* GET all products in db. */
 // router.get('/', async function(req, res, next) {
 //   try {
-//     const collection = await blogsDB().collection("products")
+//     const collection = await EcommDB().collection("products")
 //     const products = await collection.find({}).toArray()
 //     res.json(products)
 //   } catch (error) {
@@ -31,7 +31,7 @@ var {blogsDB} = require('../mongo.js')
 router.get('/:productId', async function(req, res, next) {
   try {
     const productId = Number(req.params.productId)
-    const collection = await blogsDB().collection("products")
+    const collection = await EcommDB().collection("products")
     const singleProduct = await collection.findOne({id:productId})
     res.json({message:singleProduct, success:true})
   } catch (error) {
@@ -63,7 +63,7 @@ router.get('/', async function(req, res, next) {
     if (filterField && filterValue) {
       filterObj = {[filterField]:filterValue}
     }
-    let collection = await blogsDB().collection('products')
+    let collection = await EcommDB().collection('products')
     let newData = await collection
       .find(filterObj)
       .sort(sortObj)
@@ -86,7 +86,7 @@ router.post('/create-product', async (req,res) => {
     const image = req.body.image
     const category = req.body.category
     //create id 
-    const collection = await blogsDB().collection("products")
+    const collection = await EcommDB().collection("products")
     
     const dbArr = await collection.find({}).toArray()
     // console.log(id)
@@ -122,7 +122,7 @@ router.post('/create-product', async (req,res) => {
 //       image,
 //       category
 //     }
-//     const collection = await blogsDB().collection("products")
+//     const collection = await EcommDB().collection("products")
 //     const addProduct = await collection.insertOne(data)
     
     

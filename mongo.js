@@ -14,10 +14,10 @@ const { MongoClient } = require("mongodb");
           console.error(error)
         }
       }
-      function blogsDB() {
+      function EcommDB() {
         return db;
       }
       module.exports = {
         mongoConnect,
-        blogsDB,
+        EcommDB,
     };

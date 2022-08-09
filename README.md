@@ -37,27 +37,28 @@ The goal of this project is to create an app similar to Amazon. The customer wou
             console.error(error)
             }
         }
-        function blogsDB() {
+        function EcommDB() {
             return db;
         }
         module.exports = {
             mongoConnect,
-            blogsDB,
+            EcommDB,
         };
         //in app.js
         const {mongoConnect} = require("./mongo.js")
         mongoConnect()
         //import any route 
-        var {blogsDB} = require('../mongo.js')
+        var {EcommDB} = require('../mongo.js')
     ```
 - Add DB's collections(Ecomm[users,products,carts])
 - View(GET list for all routes/(USERS,PRODUCTS/CARTS))
-- 
+- Add auth functionality(bcryptjs)(persistent login via jwt)
+  - add auth route
 
 ## Approach - Client 1B
 
 - Install boilerplate (reactapp, dotenv, react-router) and set routing w/testing.
-  
+- 
 
 
 ### User Login and Registration

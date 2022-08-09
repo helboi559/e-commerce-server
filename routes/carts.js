@@ -2,11 +2,11 @@ var express = require('express');
 const { uuid } = require('uuidv4');
 var router = express.Router();
 
-var {blogsDB} = require('../mongo.js')
+var {EcommDB} = require('../mongo.js')
 /* GET all carts in db. */
 router.get('/', async function(req, res, next) {
   try {
-    const collection = await blogsDB().collection("carts")
+    const collection = await EcommDB().collection("carts")
     const carts = await collection.find({}).toArray()
     res.json(carts)
   } catch (error) {
@@ -20,7 +20,7 @@ router.post('/create-cart', async (req,res) => {
     const items = req.body.products
     // console.log("items",items)
     const today =new Date()
-    const collection = await blogsDB().collection("carts")
+    const collection = await EcommDB().collection("carts")
     
     const data = {
       id:uuid(),
