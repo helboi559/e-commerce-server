@@ -95,6 +95,8 @@ router.post("/login-user",async (req,res)=> {
             scope:userType
         }
         const token = jwt.sign({data,exp:expiration},jwtSecretKey)
+        console.log('token for user on login',token)
+        console.log('data for user on login',data)
         res.json({success:true,token,userType})
         return;
     } catch (error) {
@@ -133,5 +135,7 @@ router.get("/validate-admin", (req, res) => {
     return res.status(401).json({ success: false, message: error });
   }
 });
+
+
 
 module.exports = router
