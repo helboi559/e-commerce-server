@@ -98,24 +98,21 @@ router.post('/create-cart', async (req,res) => {
 })
 
 //display carts by user
-router.get("/user/:userId", async (req, res) => {
+router.get("/user/order-history", async (req, res) => {
   try {
-    // const tokenHeaderKey = process.env.TOKEN_HEADER_KEY;
-    // console.log(req.headers.authorization)
-    const token = req.headers.authorization.slice(7)
-    // console.log(newToken)
-    const jwtSecretKey = process.env.JWT_SECRET_KEY;
-    // const token = req.headers.token;
     
+    const jwtSecretKey = process.env.JWT_SECRET_KEY;
+    const token = req.headers.token;
+    // console.log("token",token)
     const verified = jwt.verify(token, jwtSecretKey);
-    console.log("verified",verified)
+    // console.log("verified",verified)
     const userId = verified.data.id
-    console.log("userId",userId)
+    // console.log("userId",userId)
     if (!verified) {
         return res.json({ success: false, isAdmin: false });
     }
     const collection = await EcommDB().collection("carts")
-    const userCarts = await collection.findOne({userId})
+    const userCarts = await collection.find({userId}).toArray()
      console.log(userCarts)  
     // const userData = verified.data
 
@@ -129,12 +126,13 @@ router.get("/user/:userId", async (req, res) => {
     // if (userData && userData.scope === "user") {
     //   return res.json({ success: true, isAdmin: false });
     // }
-
+    res.json({message:userCarts,success:true})
     // throw Error("Access Denied");
   } catch (error) {
     // Access Denied
     console.log(error)
-    return res.status(401).json({ success: false, message: error });
+    
+    return res.status(401).json({ success: false, message: String(error) });
   }
 });
 
