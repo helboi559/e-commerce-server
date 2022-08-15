@@ -5,6 +5,8 @@ var dotenv = require('dotenv')
 var jwt = require('jsonwebtoken')
 dotenv.config()
 var {EcommDB, mongoConnect} = require('../mongo.js')
+
+
 /* GET all carts in db. */
 router.get('/', async function(req, res, next) {
   try {
@@ -17,48 +19,6 @@ router.get('/', async function(req, res, next) {
 });
 
 
-
-// const fetchUserInfo = async(userList) => {
-//   const collection = await EcommDB().collection("carts")
-//     const userCarts = await collection.find({
-//         userId: {
-//             $in:userList
-//         }}).toArray()
-//   console.log(userCarts)
-//   return userCarts
-// }
-// const main = async() => {
-//   await mongoConnect()
-//   const userList = [1,3]
-//   const fetch = await fetchUserInfo(userList)
-//   // const userPromises = userList.map((userId) => {
-//   //   return findUser(userId)
-//   // })
-//   console.log(fetch)
-// }
-// fetchUserInfo()
-
-// // ADD{POST} Cart to List  
-// router.post('/create-cart', async (req,res) => {
-//   try {
-//     const items = req.body.products
-//     // console.log("items",items)
-//     const today =new Date()
-//     const collection = await EcommDB().collection("carts")
-    
-//     const data = {
-//       id:uuid(),
-//       date:today.toISOString(),
-//       products:items
-//     }
-//     // console.log('data',data)
-//   const addProduct = await collection.insertOne(data)
-//     res.json({message:"success"})
-    
-//   } catch (error) {
-//     res.json({message:String(error)})
-//   }
-// })
 // ADD{POST} Cart to List  
 router.post('/create-cart', async (req,res) => {
   try {
@@ -113,26 +73,14 @@ router.get("/user/order-history", async (req, res) => {
     }
     const collection = await EcommDB().collection("carts")
     const userCarts = await collection.find({userId}).toArray()
-     console.log(userCarts)  
-    // const userData = verified.data
-
-    // if (userData && userData.scope === "admin") {
-    //   return res.json({
-    //     success: true,
-    //     isAdmin: true,
-    //   });
-    // }
-
-    // if (userData && userData.scope === "user") {
-    //   return res.json({ success: true, isAdmin: false });
-    // }
+    //  console.log(userCarts)  
+    
     res.json({message:userCarts,success:true})
-    // throw Error("Access Denied");
   } catch (error) {
     // Access Denied
     console.log(error)
     
-    return res.status(401).json({ success: false, message: String(error) });
+    res.json({ success: false, message: String(error) });
   }
 });
 

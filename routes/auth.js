@@ -31,12 +31,14 @@ dotenv.config()
 // }
 
 //global user create
-const createUser = async (username,passwordHash) => {
+const createUser = async (username,passwordHash,email,phone) => {
     try {
         const user = {
             username:username,
             password:passwordHash,
-            id:uuid()
+            id:uuid(),
+            email,
+            phone
         }
         const collection = await EcommDB().collection('users')
         await collection.insertOne(user)
@@ -51,11 +53,12 @@ router.post("/register-user",async (req,res)=> {
     try {
         const username = req.body.username
         const password = req.body.password
-        
+        const email = req.body.email
+        const phone = req.body.phone
         const saltRounds = 5
         const salt = await bcrypt.genSalt(saltRounds)
         const hash = await bcrypt.hash(password,salt)
-        const userSaveSuccess = await createUser(username,hash)
+        const userSaveSuccess = await createUser(username,hash,email,phone)
         res.json({success:userSaveSuccess})
 
     } catch (error) {
@@ -101,7 +104,7 @@ router.post("/login-user",async (req,res)=> {
         return;
     } catch (error) {
         console.log(error)
-        res.json({success:false,message:String(e)})
+        res.json({success:false,message:String(error)})
     }
 })
 

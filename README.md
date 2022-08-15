@@ -2,7 +2,7 @@
 
 ## Overview
 
-The goal of this project is to create an app similar to Amazon. The customer would have the ability to search and select products for purchase and have them delivered home. The store owner will have the ability to display what items are for sale and remove/edit products details. The features will be user cart such as adding/deleting/modifying items & rating/review system for products purchased only. The admin features will be edit/delete/add/view products on the website. Both user and admin will have login/registration and have access to certain info only.
+The goal of this project is to create an app similar to Amazon. The customer would have the ability to search and select products for purchase and have them delivered home. The "store" owner will have the ability to display what items are for sale and add/remove/edit products details and the buyer would add items to a basket for eventual purchase. Features include adding/deleting/modifying(product quantities) for "cart products". Purchased items will contain  rating/review system for other potential buyers. The admin features include edit/delete/add products on thewebsite. User authentication will be implemented to restrict certain type of info depending on access type/scope.
 
 ## Approach - Server 1A
 - Install boilerplate (express generator, cors , nodemon , dotenv, mongo) and set routing w/testing.
@@ -51,17 +51,52 @@ The goal of this project is to create an app similar to Amazon. The customer wou
         var {EcommDB} = require('../mongo.js')
     ```
 - Add DB's collections(Ecomm[users,products,carts])
-- View(GET list for all routes/(USERS,PRODUCTS/CARTS))
-- Add auth functionality(bcryptjs)(persistent login via jwt)
-  - add auth route
+<!-- - View(GET list for all routes/(USERS,PRODUCTS/CARTS)) -->
+### Routing Approach
+- Routing will include [PRODUCTS],[USERS] & [CARTS].
+  - [PRODUCTS] 
+    - *VIEW(GET)*
+      - Retrive (1) item by id
+      - List items display(sort/asc/page etc.)
+      - Rating/Review (purchased items)--------
+    - *CREATE(POST)*
+      -[Admin] Add new product to website
+    - *EDIT(PUT)*
+      - [Admin] Modify existing product info
+    - *DELETE(DELETE)*
+      - [Admin] Delete a whole product
+  - [CARTS] -Completed Purchases Only
+    - *VIEW(GET)*
+      - View Purchase history by logged in user.
+    - *CREATE(POST)*
+      - Purchase "basket"
+  - [USERS] 
+    - *VIEW(GET)*
+      - View user details by logged in user. 
+      - [Admin] View all user details
+    - *EDIT(PUT)*
+      - Modify user details by logged in user 
+    - *DELETE(DELETE)*
+      - [Admin] Delete a user 
+      - Delete own user -----
+  
 
-## Approach - Client 1B
-
-- Install boilerplate (reactapp, dotenv, react-router) and set routing w/testing.
-- 
 
 
-### User Login and Registration
+## Approach - Server 2A - Auth
+
+- Install boilerplate (uuid,bcryptjs,jwt) and set [AUTH] route w/testing.
+  - [Auth]
+    - Create user function
+    - *VIEW(GET)*
+      - [Admin] Validate Admin by scope(user/admin)
+    - *CREATE(POST)*
+      - Register newly created user
+      - Login user by username/pw
+
+
+
+## User Login and Registration
 
 - [Core] 
   - A user should be able to register with the application.
@@ -69,7 +104,6 @@ The goal of this project is to create an app similar to Amazon. The customer wou
   - A user should be able to login with the application.
     - [Stretch] A user ID Token should be generated using JsonWebToken. The ID Token should then be persisted on client side with local storage. The client should then check for the existence of the token before prompting the user to authenticate.
     - [Stretch] A user should be able to logout of the application and login with a different account.
-
 ### User Shopping 
 - [User]
     - Item Search(sort/asc/page etc.)
