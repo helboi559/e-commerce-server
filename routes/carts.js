@@ -7,14 +7,38 @@ dotenv.config()
 var {EcommDB, mongoConnect} = require('../mongo.js')
 
 
-/* GET all carts in db. */
+/* GET all purhcases in db. **ADMIN** */
 router.get('/', async function(req, res, next) {
   try {
-    const collection = await EcommDB().collection("carts")
-    const carts = await collection.find({}).toArray()
-    res.json(carts)
+    // console.log("token",req.headers)
+     const jwtSecretKey = process.env.JWT_SECRET_KEY;
+    //  const token = req.headers.authorization.slice(7)
+    const token = req.headers.token;
+    // console.log("token",token)
+    const verified = jwt.verify(token, jwtSecretKey);
+    // // console.log("verified",verified)
+   
+    // const id = verified.data.id
+    // console.log("userId",userId)
+    if (!verified) {
+        return res.json({ success: false, isAdmin: false });
+    }
+
+    const userData = verified.data
+
+    if (userData && userData.scope === "user") {
+      return res.json({ success: true, isAdmin: false });
+    }
+
+    if(userData && userData.scope === "admin") {
+       const collection = await EcommDB().collection("carts")
+       const userList = await collection.find({}).toArray()
+       return res.json({message:userList,success:true})
+    }
+
   } catch (error) {
-    res.json({message:String(error)})
+    // console.log(error)
+    res.json({message:String(error),success:false})
   }
 });
 
