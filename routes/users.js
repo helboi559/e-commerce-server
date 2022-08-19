@@ -114,7 +114,7 @@ router.get('/user/my-profile', async function(req, res, next) {
      const jwtSecretKey = process.env.JWT_SECRET_KEY;
     //  const token = req.headers.authorization.slice(7)
     const token = req.headers.token;
-    // console.log("token",token)
+    console.log("token",token)
     const verified = jwt.verify(token, jwtSecretKey);
     // // console.log("verified",verified)
     const collection = await EcommDB().collection("users")
