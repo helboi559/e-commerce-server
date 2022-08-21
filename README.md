@@ -2,10 +2,10 @@
 
 ## Overview
 
-The goal of this project is to create an app similar to Amazon. The customer would have the ability to search and select products for purchase and have them delivered home. The "store" owner will have the ability to display what items are for sale and add/remove/edit products details and the buyer would add items to a basket for eventual purchase. Features include adding/deleting/modifying(product quantities) for "cart products". Purchased items will contain  rating/review system for other potential buyers. The admin features include edit/delete/add products on thewebsite. User authentication will be implemented to restrict certain type of info depending on access type/scope.
+This app similar to Amazon. The customer would have the ability to search and select products for purchase and have them "delivered home". The "store owner" will have the ability to display what items are for sale and make changes to products and the "shopper" would browse items and potentially make a purchase. Features are destinguished by "store owner"/"admin" and "shopper"/"user" in mind. Admin features include edit/delete/add products in the app. User features include add a purchase "basket" to carts history.Authentication features will be implemented to restrict certain app features depending on access type/scope. 
 
-## Approach - Server 1A
-- Install boilerplate (express generator, cors , nodemon , dotenv, mongo) and set routing w/testing.
+## Boilerplate - Server 1A
+- Install boilerplate.
     ```js
     //cors
     var cors = require('cors')
@@ -16,8 +16,8 @@ The goal of this project is to create an app similar to Amazon. The customer wou
     require("dotenv").config()
 
     //add routes to .env file
-    MONGO_URI = mongodb+srv://jramirez559:CodeImmersives2022@codeimmersives.woe8edu.mongodb.net/?retryWrites=true&w=majority
-    MONGO_DATABASE = Ecomm
+    MONGO_URI = <urladdress>
+    MONGO_DATABASE = <DB Name>
 
     //mongdb 
         //in mongo.js
@@ -51,39 +51,39 @@ The goal of this project is to create an app similar to Amazon. The customer wou
         var {EcommDB} = require('../mongo.js')
     ```
 - Add DB's collections(Ecomm[users,products,carts])
-<!-- - View(GET list for all routes/(USERS,PRODUCTS/CARTS)) -->
-### Routing Approach
-- Routing will include [PRODUCTS],[USERS] & [CARTS].
-  - [PRODUCTS] 
+### Routing Approach - server 1A
+- After boilerplate is installed/configures, [PRODUCTS],[CARTS],[USERS] & [ADMIN] are the main routes for this app.
+  - [Products]:
     - *VIEW(GET)*
-      - Retrive (1) item by id
-      - List items display(sort/asc/page etc.)
-      - Rating/Review (purchased items)--------
+      -  All Prodcuts(sort/filter) 
+      - [NYI]NOT YET IMPLEMENTED
+        - Single product page(by prodId) 
+        - Rating/Review (purchased products)
     - *CREATE(POST)*
-      -[Admin] Add new product to website
+      - [Admin] Add new product to store.
     - *EDIT(PUT)*
-      - [Admin] Modify existing product info
+      - [Admin] Modify existing product info.
     - *DELETE(DELETE)*
-      - [Admin] Delete a whole product
-  - [CARTS] -Completed Purchases Only
+      - [Admin] Delete a product.
+  - [CARTS]
     - *VIEW(GET)*
       - View Purchase history by logged in user.
     - *CREATE(POST)*
-      - Purchase "basket"
-  - [USERS] 
-    - *VIEW(GET)*
-      - View user details by logged in user. 
-      - [Admin] View all user details
-    - *EDIT(PUT)*
-      - Modify user details by logged in user 
-    - *DELETE(DELETE)*
-      - [Admin] Delete a user 
-      - Delete own user -----
-  
+      - [Note] - *BEFORE PURCHASE*
+        - *Basket* - add/edit/delete products to/in basket
+        - *Basket* - Purchase
+   - [USERS] 
+      - *VIEW(GET)*
+        - View user details by logged in user. 
+        - [Admin] View all user details
+      - *EDIT(PUT)*
+        - Modify user details by logged in user 
+      - *DELETE(DELETE)*
+        - [Admin] Delete a user 
+        - [NYI]
+          - Delete Own user account 
 
-
-
-## Approach - Server 2A - Auth
+## Authentication Approach - Server 2A  
 
 - Install boilerplate (uuid,bcryptjs,jwt) and set [AUTH] route w/testing.
   - [Auth]
@@ -95,6 +95,17 @@ The goal of this project is to create an app similar to Amazon. The customer wou
       - Login user by username/pw
 
 
+## Deployment Approach - 3A
+- After installing heroku cli and creating an app name ensure that:
+  - Server config vars are in set in heroku:
+    - <MONGO_URI> ,<DBNAME> , <JWT_SECRET_KEY>,<TOKEN_HEADER_KEY>
+- How to get server logs?
+  - heroku logs -n 200
+    - For requesting the first 200 lines
+  - [More Useful Command] heroku logs --tail
+    - For requesting the end of the file
+  - heroku logs --tail -n 500
+    - Combined command
 
 ## User Login and Registration
 

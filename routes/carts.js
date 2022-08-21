@@ -6,13 +6,27 @@ var jwt = require('jsonwebtoken')
 dotenv.config()
 var {EcommDB, mongoConnect} = require('../mongo.js')
 
-
+// [
+//     {
+//         id:1,
+//         userId:1,
+//         date:2020-10-10,
+//         products:[{productId:2,quantity:4},{productId:1,quantity:10},{productId:5,quantity:2}]
+//     },
+//     /*...*/
+//     {
+//         id:20,
+//         userId:10,
+//         date:2019-10-10,
+//         products:[{productId:1,quantity:5},{productId:5,quantity:1}]
+//     }
+// ]
 /* GET all purhcases in db. **ADMIN** */
 router.get('/', async function(req, res, next) {
   try {
     // console.log("token",req.headers)
      const jwtSecretKey = process.env.JWT_SECRET_KEY;
-    //  const token = req.headers.authorization.slice(7)
+    //  const token = req.headers.authorization.slice(7) //POSTMAN TEST
     const token = req.headers.token;
     // console.log("token",token)
     const verified = jwt.verify(token, jwtSecretKey);

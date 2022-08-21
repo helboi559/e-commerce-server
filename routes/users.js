@@ -31,7 +31,7 @@ var {EcommDB} = require('../mongo.js')
 // 	"__v" : 0
 // }
 
-/* GET user details **ADMIN**/
+/* GET All user details **ADMIN**/
 router.get('/user-list', async function(req, res, next) {
   try {
     // console.log("token",req.headers)
@@ -66,7 +66,7 @@ router.get('/user-list', async function(req, res, next) {
   }
 });
 
-/* GET user details **ADMIN**/
+/* Delete user details **ADMIN**/
 router.delete('/user-list/delete-user', async function(req, res, next) {
   try {
     // console.log("token",req.headers)
@@ -123,12 +123,11 @@ router.get('/user/my-profile', async function(req, res, next) {
     if (!verified) {
         return res.json({ success: false, isAdmin: false });
     }
-    
-    
+    //if its scope doesnt matter
     const userInfo = await collection.findOne({id})
     
     // console.log("userInfo",userInfo)
-    res.json({message:userInfo,success:true})
+    return res.json({message:userInfo,success:true})
 
   } catch (error) {
     // console.log(error)
