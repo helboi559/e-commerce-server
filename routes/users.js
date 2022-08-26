@@ -185,5 +185,67 @@ router.put('/user/my-profile/edit-user', async function(req, res, next) {
   }
 });
 
+//POST FORGOT PASSWORD
+router.post("/user/forgot-password", async (req,res)=> {
+  try {
+    const email = req.body.email
+    console.log(email)
+    const collection = await EcommDB().collection("users")
+    const user = await collection.findOne({email})
+    if(!user) {
+      res.json({success:false,message:"User Not Reqistered"}).status(204)
+      return;
+    }
+    // console.log(user)
+    //add jwt 
+    const jwtSecretKey = process.env.JWT_SECRET_KEY + user.password
+    //expiration
+    // const expiration = Math.floor(Date.now() / 1000)  + 60 * 60;
+    const data = {
+      email:user.email,
+      id:user.id
+    }
+    const token = jwt.sign({data},jwtSecretKey,{expiresIn:"15m"})
+    const link = `http://localhost:3000/users/reset-password/${user.id}/${token}`
+    console.log("token",token)
+    console.log("link",link)
+    res.json({message:true})
+  } catch (error) {
+    console.log(error)
+    res.json({message:String(error)})
+  }
+})
+
+router.get("/user/reset-password/:id/:token", async (req,res)=> {
+  try {
+    const {id,token} = req.query.params
+    const collection = await EcommDB().collection("users")
+    const user = await collection.findOne({id})
+    if (id !== user.id) {
+      res.json({success:false,message:"User Not Reqistered"}).status(204)
+      return;
+    }
+    // const token = req.headers.authorization.slice(7)
+    // console.log(token)
+    const jwtSecretKey = process.env.JWT_SECRET_KEY + user.password
+    const verified = jwt.verify(token, jwtSecretKey);
+    console.log("verefied",verified)
+    res.json({success:true,message:user.email})
+    
+  } catch (error) {
+    console.log(error)
+    res.json({success:false,message:String(error)})
+  }
+})
+
+router.post("/user/reset-password/:id/:token", async (req,res)=> {
+  
+    const {id,token} = req.query.params
+    const collection = await EcommDB().collection("users")
+    const user = await collection.findOne({id})
+    
+    res.json({user})   
+ 
+})
 
 module.exports = router;

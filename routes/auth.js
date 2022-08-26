@@ -76,13 +76,13 @@ router.post("/login-user",async (req,res)=> {
         const user = await collection.findOne({username})
         //if user doesnt exist
         if (!user) {
-            res.json({success:false,message:"could not find user"}).status(204)
+            res.json({success:false,message:"Could not find user"}).status(204)
             return;
         }
         const match = await bcrypt.compare(password,user.password);
         //if password does not match
         if(!match) {
-            res,json({success:false,message:"password was incorrect"}).status(204)
+            res,json({success:false,message:"Password was incorrect!"}).status(204)
             return;
         }
         //add jwt for persistent login
