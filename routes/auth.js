@@ -82,7 +82,7 @@ router.post("/login-user",async (req,res)=> {
         const match = await bcrypt.compare(password,user.password);
         //if password does not match
         if(!match) {
-            res,json({success:false,message:"Password was incorrect!"}).status(204)
+            res.json({success:false,message:"Password was incorrect!"}).status(204)
             return;
         }
         //add jwt for persistent login
