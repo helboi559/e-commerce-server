@@ -62,11 +62,16 @@ router.get('/', async function(req, res, next) {
     }
     let filterField = req.query.filterField
     let filterValue = req.query.filterValue
-
+    // {title:{$regex: partialValue, $options:'i'}}
     let filterObj = {}
     if (filterField && filterValue) {
-      filterObj = {[filterField]:filterValue}
+      // filterObj = {[filterField]:{$regex:filterValue,$options:"i"}}
+      filterObj = {"$or": [
+                        {title:{$regex:filterValue,$options:"i"}},
+                        {category:{$regex:filterValue,$options:"i"}}
+      ]}
     }
+    // console.log(filterObj)
     let collection = await EcommDB().collection('products')
     let newData = await collection
       .find(filterObj)
@@ -81,6 +86,40 @@ router.get('/', async function(req, res, next) {
   }
 });
 
+/* GET find product by text search */
+router.get('/product/partial-search/', async function(req, res, next) {
+  try {
+    // let limit = Number(req.query.limit)
+    // let skip = Number(req.query.limit) * (Number(req.query.page) - 1)
+    // let sortOrder = req.query.sortOrder
+    // if(sortOrder === "asc") {
+    //   sortOrder = 1
+    // } else if (sortOrder === 'desc') {
+    //   sortOrder = -1
+    // }
+    // let sortField = req.query.sortField
+    // let sortObj = {}
+    //if both exist
+    // if(sortField && sortOrder) {
+    //   sortObj = {[sortField]:sortOrder}
+    // }
+    // let partialField = req.query.partialField
+    let partialValue = req.query.title
+
+    // let re = new RegExp(partialValue,"^ABC")
+    // let newStr = new RegExp(partialValue,"^ABC")
+    // console.log(re)
+     console.log(req.query.title)
+    
+    let collection = await EcommDB().collection('products')
+    //mongo regex query case insensitive
+    let newData = await collection.find({title:{$regex: partialValue, $options:'i'}}).toArray();
+    console.log("newData",newData)
+    res.json({message:newData,success:true})
+  } catch (error) {
+    res.json({message:String(error),success:false})
+  }
+});
 // ADD{POST} Product to List  ***(ADMIN)***
 router.post('/create-product', async (req,res) => {
   try {

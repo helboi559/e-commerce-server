@@ -210,13 +210,14 @@ router.post("/user/forgot-password", async (req,res)=> {
     }
     
     const token = jwt.sign({data},jwtSecretKey,{expiresIn:"15m"})
-    const link = `http://localhost:3000/users/reset-password/${user.id}/${token}`
+    const url = process.env.EXPRESS_APP_URL_ENDPOINT
+    const link = `${url}/users/reset-password/${user.id}/${token}`
     const message = {
       to: `${user.email}`,
       from: 'rami8224.2007@hotmail.com', // Use the email address or domain you verified above
       subject: 'Password Reset',
       text: 'Click on on this link below',
-      html: `<h1>${link}</h1>`
+      html: `<h4>Follow the link to recover your password. This link will remain active for 15 minutes. </h4> <p>${link}</p>`
     }
     sgMail.send(message)
     console.log("token",token)
